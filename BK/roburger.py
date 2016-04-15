@@ -85,6 +85,7 @@ class BKBrowser(object):
     def return_result(self):
         return self.result
 
+
 def burgermain():
     browser = BKBrowser()
     print("- " + browser.get_validation_code())
