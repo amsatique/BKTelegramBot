@@ -20,7 +20,7 @@ def send_welcome(message):
 # Handle '/start' and '/help'
 @bot.message_handler(commands=['freebk'])
 def send_code(message):
-    bot.reply_to(message, roburger.burgermain() + "/n-  Bon appetit!")
+    bot.reply_to(message, roburger.burgermain() + ". Bon appetit!")
 
 
 # Handle all other messages with content_type 'text' (content_types defaults to ['text'])
