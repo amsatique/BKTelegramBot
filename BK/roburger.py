@@ -36,23 +36,13 @@ class BKBrowser(object):
     def __init__(self):
         # Browse url :
         self.result = None
-        self.burger_count = 0
         self.browser = RoboBrowser(parser="html.parser")
         self.browser.session.headers = config.headers
         # Mount with custom SSL Adapter
         self.browser.session.mount('https://', HTTPSAdapter())
 
-    def _saving_count(self):
-        with open('burgercount.txt', 'w') as f:
-            f.write(str(self.burger_count))
-
-    def _load_count(self):
-        with open('burgercount.txt') as f:
-            self.burger_count = f.read()
-
     def _connect(self):
         # Get to website
-        self._load_count()
         print("- Connecting to url ...")
         self.browser.open(config.url)
 
@@ -89,7 +79,6 @@ class BKBrowser(object):
         print(self.burger_count)
         self.burger_count = int(self.burger_count) + 1
         print(self.burger_count)
-        self._saving_count()
 
     def get_validation_code(self):
         self._connect()
@@ -102,11 +91,6 @@ class BKBrowser(object):
 
     def return_result(self):
         return self.result
-
-
-def generated_burger():
-    with open('burgercount.txt') as f:
-        return f.read()
 
 
 def burgermain():
