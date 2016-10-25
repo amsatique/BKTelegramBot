@@ -1,5 +1,6 @@
 import random
 import ssl
+import mongo_interact.py
 from collections import defaultdict
 import pickle
 
@@ -7,6 +8,8 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.poolmanager import PoolManager
 from robobrowser import RoboBrowser
 import config
+
+
 
 
 def max_radio_map(brow):
@@ -93,10 +96,17 @@ class BKBrowser(object):
         return self.result
 
 
-def burgermain():
-    browser = BKBrowser()
-    print("- " + browser.get_validation_code())
-    print("- Bon appetit !")
-    print(browser.result)
-    return browser.result
+def generated_burger():
+    with open('burgercount.txt') as f:
+        return f.read()
+
+
+def burgermain(generating_number):
+    a = []
+    for i in range(0, generating_number):
+        browser = BKBrowser()
+        print("- " + browser.get_validation_code())
+        print("- Bon appetit !")
+        a.append(browser.result)
+    return a
 
