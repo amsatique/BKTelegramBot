@@ -3,6 +3,7 @@ import roburger
 import mongo_interact
 import os
 
+
 # Emojis and cute stuff
 hourglass = u'\U0000231B'
 hamburger = u'\U0001F354'
@@ -73,6 +74,5 @@ def holding_burger_generation(message):
         bot.reply_to(message, q.burgermain(1)[0] + haveAGoodMealString())
         e.updateGeneratedNumber(1)
         print("Else? ")
-
 
 bot.polling()
