@@ -1,21 +1,24 @@
 from pymongo import MongoClient
 import datetime
 
+
 class MongoInteract(object):
     def __init__(self):
         self.client = MongoClient("mongodb://172.17.0.2:27017")
         self.db = self.client.bktelegram
         self.codecountavailable = self.countBKCodeAvailable()
 
-    def insertANewCode(self, bkcode):
-        result = self.db.code.insert_one({
-            "date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "usedcode": False,
-            "bkcode": bkcode
-        })
-
+    def insertANewCode(self, inputbkcode):
+        for i in inputbkcode:
+            print("# - Add a code " + i)
+            result = self.db.code.insert_one({
+                "date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "usedcode": False,
+                "bkcode": i
+            })
 
     def updateUsedCode(self, bkcode):
+        print("# - UpdateCode " + bkcode)
         result = self.db.code.update_one(
             {"bkcode": bkcode},
             {
@@ -23,27 +26,46 @@ class MongoInteract(object):
             }
         )
 
-
-    def findAllCode(self):
-        # Link recup to send to another bot
-        n = 0
-        cursor = self.db.code.find({"usedcode": False})
+    def getACode(self):
+        print("# - Get a unique code from mongo, set it to false")
+        n = ""
+        cursor = self.db.code.find({"usedcode": False}).limit(1)
         for doc in cursor:
-            n =+ 1
-            print(doc)
+            n = doc['bkcode']
+        self.updateGeneratedNumber(1)
+        self.updateUsedCode(n)
+        return n
+
+    # def findAllCode(self):
+    #     print("# - Find all code ")
+    #     # Link recup to send to another bot
+    #     n = 0
+    #     cursor = self.db.code.find({"usedcode": False})
+    #     for doc in cursor:
+    #         n = + 1
+    #         print(doc)
+    #     return n
+
+    def countAllBurgerGenerated(self):
+        print("# - Get how much burger has been generated")
+        n = ""
+        cursor = self.db.code.find({"featurename": "compteur"}).limit(1)
+        for doc in cursor:
+            n = doc['count_burger']
         return n
 
     def countBKCodeAvailable(self):
+        print("# - Get unused bk code count on mongodb")
         a = self.db.code.count({"usedcode": False})
         return a
 
-
     def deleteUsedCode(self, usedCode):
+        print("# - Delete code containing " + usedCode)
         result = self.db.code.delete_many({"bkcode": usedCode})
         return result
 
-
-    def updateGeneratedNumber(self):
+    def updateGeneratedNumber(self, inputGenerateBurgerNumber):
+        print("# - Update Generated count by " + str(inputGenerateBurgerNumber))
         a = self.db.code.count('count_burger')
         if a == 0:
             result = self.db.code.insert_one({
@@ -56,24 +78,8 @@ class MongoInteract(object):
                 {"featurename": "compteur"},
                 {
                     "$inc":
-                        {"count_burger": 1},
+                        {"count_burger": inputGenerateBurgerNumber},
                     "$currentDate":
                         {"lastburgertime": True}
                 }
             )
-
-
-# TODO : When 1 code is ok, if there is less than 5 code, go generate
-# TODo : A generate code factory, just an int and bim, he create codes and add them to an array
-# Todo : Code given : if 0 in db, generate, give, generate 5
-# todo : Code given : if 1 in db, give it, remove it, generate
-
-e = MongoInteract()
-# insertANewCode("BK12348")
-e.findAllCode()
-print(e.countBKCodeAvailable())
-e.updateGeneratedNumber()
-e.updateUsedCode("BK12348")
-print(e.countBKCodeAvailable())
-# u = deleteUsedCode("BK1234")
-# findAllCode()

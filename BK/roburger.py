@@ -1,8 +1,6 @@
 import random
 import ssl
-import mongo_interact.py
 from collections import defaultdict
-import pickle
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.poolmanager import PoolManager
@@ -78,27 +76,16 @@ class BKBrowser(object):
         form.serialize()
         self.browser.submit_form(form)
 
-    def _add_burger_count(self):
-        print(self.burger_count)
-        self.burger_count = int(self.burger_count) + 1
-        print(self.burger_count)
-
     def get_validation_code(self):
         self._connect()
         self._skip_first_page()
         self._fill_date_form()
         self._fill_form()
         self.result = self.browser.find('p', {'class': 'ValCode'}).text
-        self._add_burger_count()
         return self.result
 
     def return_result(self):
         return self.result
-
-
-def generated_burger():
-    with open('burgercount.txt') as f:
-        return f.read()
 
 
 def burgermain(generating_number):
@@ -109,4 +96,3 @@ def burgermain(generating_number):
         print("- Bon appetit !")
         a.append(browser.result)
     return a
-

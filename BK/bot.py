@@ -12,8 +12,7 @@ thumbsupsign = u'\U0001F44D'
 clappinghandsign = u'\U0001F44D'
 
 
-
-# API_TOKEN = os.environ['API_TOKEN']
+API_TOKEN = os.environ['API_TOKEN']
 bot = telebot.TeleBot(API_TOKEN)
 
 
@@ -30,14 +29,14 @@ def send_welcome(message):
 @bot.message_handler(commands=['freebk'])
 def send_code(message):
     print("# - Current cmd=freebk")
-    bot.reply_to(message, holding_burger_generation() + "\n    "+hamburger+"    Bon appetit!   " + hamburger)
+    holding_burger_generation(message)
 
 
 # Handle '/about', giving people informations
 @bot.message_handler(commands=['about'])
 def send_welcome(message):
     print("# - Current cmd=about")
-    burgernumber = roburger.generated_burger()
+    burgernumber = mongo_interact.MongoInteract().countAllBurgerGenerated()
     bot.reply_to(message, """Over """ + str(burgernumber) + ' ' + hamburger + """ has been generated ! """+thumbsupsign+""" If you like our bot, please put """ + star + star + star + star + star + """ here :
 http://telegram.me/storebot?start=bkcodebot""")
 
@@ -49,23 +48,31 @@ def echo_message(message):
     bot.reply_to(message, """Type /freebk, get burgers!""")
 
 
-def holding_burger_generation():
+def haveAGoodMealString():
+    return "\n    " + hamburger + "    Bon appetit!   " + hamburger
+
+
+def holding_burger_generation(message):
     e = mongo_interact.MongoInteract()
-    u = roburger
+    q = roburger
     g = e.codecountavailable
     if g == 0:
-        pass
-    # TODO Generer un code, le renvoyer au user, lancer 5 generations, sauvegarder vers la base
+        bot.reply_to(message, q.burgermain(1)[0] + haveAGoodMealString())
+        u = q.burgermain(5)
+        e.insertANewCode(u)
+        e.updateGeneratedNumber(1)
     elif 0 < g < 5:
-        pass
-    # TODO prendre un code en db, lancer g+1 generations, sauvegarder vers la base
-    elif g > 5:
-        pass
-    # TODO transmettre un code.
+        r = e.getACode()
+        bot.reply_to(message, r + haveAGoodMealString())
+        u = q.burgermain(2)
+        e.insertANewCode(u)
+    elif g > 4:
+        r = e.getACode()
+        bot.reply_to(message, r + haveAGoodMealString())
     else:
-        print("Else?")
-        pass
-    # TODO Faire un code, just like before
+        bot.reply_to(message, q.burgermain(1)[0] + haveAGoodMealString())
+        e.updateGeneratedNumber(1)
+        print("Else? ")
 
 
 bot.polling()
