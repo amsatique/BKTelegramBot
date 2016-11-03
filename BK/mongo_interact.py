@@ -4,7 +4,7 @@ import datetime
 
 class MongoInteract(object):
     def __init__(self):
-        self.client = MongoClient("mongodb://172.17.0.2:27017")
+        self.client = MongoClient("mongodb://db:27017")
         self.db = self.client.bktelegram
         self.codecountavailable = self.countBKCodeAvailable()
 
