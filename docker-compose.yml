@@ -12,21 +12,16 @@ services:
   bktelegram:
     container_name: bktelegram
     restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     environment:
-      - "API_TOKEN=YOUR_API_KEY_HERE"
+      - "API_TOKEN=YOUR_APIKEY_HERE"
       - PYTHONUNBUFFERED=0
     ports :
       - "80:80"
     depends_on:
       - db
-    links:
-      - db:db
     networks:
       - net
 
 networks:
   net:
-    driver: bridge

@@ -4,7 +4,7 @@ import datetime
 
 class MongoInteract(object):
     def __init__(self):
-        self.client = MongoClient("mongodb://db:27017")
+        self.client = MongoClient("mongodb://172.17.0.2:27017")
         self.db = self.client.bktelegram
         self.codecountavailable = self.countBKCodeAvailable()
 
@@ -48,11 +48,11 @@ class MongoInteract(object):
 
     def countAllBurgerGenerated(self):
         print("# - Get how much burger has been generated")
-        n = ""
         cursor = self.db.code.find({"featurename": "compteur"}).limit(1)
         for doc in cursor:
             n = doc['count_burger']
-        return n
+            print("# - BurgerNumber :" + str(doc['count_burger']))
+            return n
 
     def countBKCodeAvailable(self):
         print("# - Get unused bk code count on mongodb")

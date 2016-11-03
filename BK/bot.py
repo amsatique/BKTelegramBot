@@ -58,16 +58,20 @@ def holding_burger_generation(message):
     q = roburger
     g = e.codecountavailable
     if g == 0:
+        print('g0')
         bot.reply_to(message, q.burgermain(1)[0] + haveAGoodMealString())
         u = q.burgermain(5)
+        print(u)
         e.insertANewCode(u)
         e.updateGeneratedNumber(1)
     elif 0 < g < 5:
+        print('g14')
         r = e.getACode()
         bot.reply_to(message, r + haveAGoodMealString())
         u = q.burgermain(2)
         e.insertANewCode(u)
     elif g > 4:
+        print('g5or+')
         r = e.getACode()
         bot.reply_to(message, r + haveAGoodMealString())
     else:
