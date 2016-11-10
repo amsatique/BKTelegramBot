@@ -18,6 +18,8 @@ services:
       - PYTHONUNBUFFERED=0
     depends_on:
       - db
+    expose:
+      - "4000:4000"
     networks:
       - net
 
