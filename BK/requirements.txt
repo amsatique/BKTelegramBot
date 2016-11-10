@@ -2,3 +2,4 @@ robobrowser==0.5.3
 requests
 pyTelegramBotAPI
 pymongo
+werkzeug
