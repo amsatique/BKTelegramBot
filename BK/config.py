@@ -5,7 +5,7 @@ url = 'https://www.bkvousecoute.fr'
 ID = '20771'  # Boetie restaurant
 
 # Input here date and time:
-date = ['02', '15']
+date = ['01', '01']
 time = ['12', '30']
 
 # HTTP inputs:
