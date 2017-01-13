@@ -16,10 +16,10 @@ services:
     environment:
       - "API_TOKEN=YOUR_APIKEY_HERE"
       - PYTHONUNBUFFERED=0
-    ports :
-      - "80:80"
     depends_on:
       - db
+    expose:
+      - "4000:4000"
     networks:
       - net
 
