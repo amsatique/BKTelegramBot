@@ -41,7 +41,6 @@ def handle(message):
         return
 
     feedback = message['text'].lower()
-    print("# - Current cmd="+feedback)
     global burgerNumber
     if feedback == '/freebk':
         holding_burger_generation(chat_id, keyboard)
