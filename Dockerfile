@@ -1,6 +1,6 @@
-FROM ubuntu:trusty
+FROM ubuntu:bionic
 MAINTAINER 300KN
-RUN apt-get update &&  apt-get -y install python3 git wget
+RUN apt-get update && apt-get -y install python3 python3-distutils git wget
 RUN wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
 
 COPY BK /BK
