@@ -2,4 +2,4 @@ robobrowser==0.5.3
 requests
 telepot
 pymongo
-werkzeug
+werkzeug==0.16.1

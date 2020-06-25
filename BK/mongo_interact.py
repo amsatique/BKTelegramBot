@@ -66,7 +66,7 @@ class MongoInteract(object):
 
     def updateGeneratedNumber(self, inputGenerateBurgerNumber):
         print("# - Update Generated count by " + str(inputGenerateBurgerNumber))
-        a = self.db.code.count('count_burger')
+        a = self.db.code.count({"count_burger": { "$exists": True }})
         if a == 0:
             result = self.db.code.insert_one({
                 "featurename": "compteur",
